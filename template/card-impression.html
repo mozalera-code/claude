@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; }
+  body {
+    font-family: 'Georgia', 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+  }
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .overlay {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 60%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.78) 65%, rgba(0,0,0,0.9) 100%);
+  }
+  .text-block {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 80px;
+    color: #ffffff;
+  }
+  .quote-mark {
+    font-family: Georgia, serif;
+    font-size: 110px;
+    line-height: 1;
+    color: #ffffff;
+    opacity: 0.85;
+    margin-bottom: -20px;
+  }
+  .title {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  .location {
+    margin-top: 28px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pin {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .brand {
+    position: absolute;
+    top: 48px;
+    left: 64px;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+  <img class="photo" id="photo" src="" alt="" />
+  <div class="overlay"></div>
+  <div class="brand" id="brand"></div>
+  <div class="text-block">
+    <div class="quote-mark">&#8220;</div>
+    <div class="title" id="title"></div>
+    <div class="location">
+      <svg class="pin" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+      <span id="location-text"></span>
+    </div>
+  </div>
+</body>
+</html>

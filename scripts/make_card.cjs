@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-// Генерирует карточку 1080x1350 из фото + заголовка + места, рендеря template/card.html в headless Chromium.
+// Генерирует карточку 1080x1350 из фото + заголовка + места, рендеря HTML-шаблон в headless Chromium.
+// Варианты шаблона (--variant): classic (заголовок + место) | impression (заголовок-впечатление в виде цитаты + место)
 // Пример:
 //   node scripts/make_card.cjs --photo in.jpg --title "Закат на крыше" --location "Лиссабон, Португалия" --out out.png --brand "@mytravel"
+//   node scripts/make_card.cjs --variant impression --photo in.jpg --title "Будто попал в другую эпоху" --location "Лиссабон, Португалия" --out out.png
 
 const { chromium } = require('playwright');
 const { readFileSync } = require('fs');
@@ -26,14 +28,24 @@ function escapeHtml(str = '') {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const { photo, title, location, out, brand = '' } = args;
+  const { photo, title, location, out, brand = '', variant = 'classic' } = args;
 
   if (!photo || !title || !location || !out) {
-    console.error('Нужны параметры: --photo <файл> --title "<текст>" --location "<текст>" --out <файл.png> [--brand "<текст>"]');
+    console.error('Нужны параметры: --photo <файл> --title "<текст>" --location "<текст>" --out <файл.png> [--brand "<текст>"] [--variant classic|impression]');
     process.exit(1);
   }
 
-  const templatePath = resolve(__dirname, '../template/card.html');
+  const templateFiles = {
+    classic: 'card.html',
+    impression: 'card-impression.html',
+  };
+  const templateFile = templateFiles[variant];
+  if (!templateFile) {
+    console.error(`Неизвестный --variant "${variant}". Доступны: ${Object.keys(templateFiles).join(', ')}`);
+    process.exit(1);
+  }
+
+  const templatePath = resolve(__dirname, '../template', templateFile);
   const html = readFileSync(templatePath, 'utf-8');
 
   const photoPath = resolve(photo);
