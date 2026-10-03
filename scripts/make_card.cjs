@@ -2,8 +2,9 @@
 // Renders a 1080x1350 card from a photo + headline + location via an HTML template in headless Chromium.
 // Template variants (--variant): classic (headline + location) | impression (headline as a quote + location)
 // Example:
-//   node scripts/make_card.cjs --photo in.jpg --title "Sunset on the Rooftop" --location "Lisbon, Portugal" --out out.png --brand "@mytravel"
+//   node scripts/make_card.cjs --photo in.jpg --title "Sunset on the Rooftop" --location "Lisbon, Portugal" --out out.png
 //   node scripts/make_card.cjs --variant impression --photo in.jpg --title "Like stepping into another era" --location "Lisbon, Portugal" --out out.png
+// --brand defaults to "@mozalera"; pass --brand "" to omit it, or --brand "<other>" to override.
 
 const { chromium } = require('playwright');
 const { readFileSync } = require('fs');
@@ -28,7 +29,7 @@ function escapeHtml(str = '') {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const { photo, title, location, out, brand = '', variant = 'classic' } = args;
+  const { photo, title, location, out, brand = '@mozalera', variant = 'classic' } = args;
 
   if (!photo || !title || !location || !out) {
     console.error('Required: --photo <file> --title "<text>" --location "<text>" --out <file.png> [--brand "<text>"] [--variant classic|impression]');

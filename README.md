@@ -57,8 +57,7 @@ node scripts/make_card.cjs \
   --photo posts/2026-01-10-lisbon/photo.jpg \
   --title "Sunset on the Rooftop" \
   --location "Lisbon, Portugal" \
-  --out posts/2026-01-10-lisbon/card.png \
-  --brand "@mytravel"
+  --out posts/2026-01-10-lisbon/card.png
 ```
 
 Impression (emotional headline instead of a plain description):
@@ -68,8 +67,7 @@ node scripts/make_card.cjs \
   --photo posts/2026-01-10-lisbon/photo.jpg \
   --title "Like stepping into another era" \
   --location "Lisbon, Portugal" \
-  --out posts/2026-01-10-lisbon/card-impression.png \
-  --brand "@mytravel"
+  --out posts/2026-01-10-lisbon/card-impression.png
 ```
 
 Parameters:
@@ -77,7 +75,7 @@ Parameters:
 - `--title` — headline on the card (1–2 lines; keep it short — the caption zone is capped at ~30% of the image).
 - `--location` — place (city, country).
 - `--out` — where to save the finished PNG card.
-- `--brand` — optional, author handle shown in the corner.
+- `--brand` — author handle shown in the corner, defaults to `@mozalera`. Pass `--brand ""` to omit it, or `--brand "<other>"` to override.
 - `--variant` — `classic` (default) or `impression`.
 
 ## Workflow per post
