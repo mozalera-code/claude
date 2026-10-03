@@ -1,55 +1,55 @@
-# Инфраструктура постинга — Trip.com Creator
+# Posting infrastructure — Trip.com Creator
 
-Конвейер для быстрой подготовки постов: текст + фото-карточка с заголовком и местом.
+Pipeline for quickly preparing posts: text + photo card with a headline and location.
 
-## Структура
+## Structure
 
-- `template/card.html` — вариант **classic**: заголовок (1080×1350, фото фоном, затемнение снизу, заголовок + место).
-- `template/card-impression.html` — вариант **impression**: заголовок-впечатление в виде курсивной цитаты (с кавычкой) + место капсом.
-- `scripts/make_card.cjs` — рендерит карточку из фото + текста через headless Chromium (Playwright), шаблон выбирается флагом `--variant`.
-- `posts/` — один пост = одна папка: исходное фото, текст поста, готовая карточка.
+- `template/card.html` — **classic** variant: 1080×1350, photo background, bottom-up darkening overlay, headline + location.
+- `template/card-impression.html` — **impression** variant: headline as an emotional quote (italic, opening quote mark) + location in small caps.
+- `scripts/make_card.cjs` — renders a card from a photo + text via headless Chromium (Playwright); template is picked with `--variant`.
+- `posts/` — one post = one folder: source photo, post text, finished card.
 
-## Как сделать карточку
+## Generating a card
 
-Classic (нейтральный заголовок + место):
+Classic (plain headline + location):
 ```
 node scripts/make_card.cjs \
   --photo posts/2026-01-10-lisbon/photo.jpg \
-  --title "Закат на крыше" \
-  --location "Лиссабон, Португалия" \
+  --title "Sunset on the Rooftop" \
+  --location "Lisbon, Portugal" \
   --out posts/2026-01-10-lisbon/card.png \
   --brand "@mytravel"
 ```
 
-Impression (заголовок-впечатление, эмоциональная фраза вместо описания):
+Impression (emotional headline instead of a plain description):
 ```
 node scripts/make_card.cjs \
   --variant impression \
   --photo posts/2026-01-10-lisbon/photo.jpg \
-  --title "Будто попал в другую эпоху" \
-  --location "Лиссабон, Португалия" \
+  --title "Like stepping into another era" \
+  --location "Lisbon, Portugal" \
   --out posts/2026-01-10-lisbon/card-impression.png \
   --brand "@mytravel"
 ```
 
-Параметры:
-- `--photo` — путь к исходному фото (jpg/png).
-- `--title` — заголовок на карточке (1 строка; в варианте impression — эмоциональная фраза-впечатление, до ~40 символов, иначе может не поместиться).
-- `--location` — место (город, страна).
-- `--out` — куда сохранить готовую PNG-карточку.
-- `--brand` — необязательно, подпись автора в углу.
-- `--variant` — `classic` (по умолчанию) или `impression`.
+Parameters:
+- `--photo` — path to the source photo (jpg/png).
+- `--title` — headline on the card (1 line; in the impression variant, an emotional reaction, up to ~40 characters or it may not fit).
+- `--location` — place (city, country).
+- `--out` — where to save the finished PNG card.
+- `--brand` — optional, author handle shown in the corner.
+- `--variant` — `classic` (default) or `impression`.
 
-## Процесс на один пост
+## Workflow per post
 
-1. Создаёте папку `posts/<дата-название>/`, кладёте туда фото.
-2. Присылаете мне факты о месте (что это, впечатления, детали) — помогаю написать:
-   - заголовок для карточки,
-   - текст самого поста для Trip.com.
-3. Запускаем `make_card.cjs` — получаем готовую карточку.
-4. Текст поста сохраняется в `posts/<дата-название>/post.txt`.
-5. Вы вручную публикуете карточку + текст в приложении/на сайте Trip.com (автопостинга нет — официального API для creator-программы не подтверждено).
+1. Create a folder `posts/<date-name>/`, drop the photo there.
+2. Send me the facts about the place (what it is, your impressions, details) — I help write:
+   - the card headline,
+   - the post text for Trip.com.
+3. Run `make_card.cjs` — get the finished card.
+4. The post text is saved to `posts/<date-name>/post.txt`.
+5. You manually publish the card + text in the Trip.com app/site (no auto-posting — no confirmed official API for the creator program).
 
-## Донастройка дизайна
+## Adjusting the design
 
-Стили карточки — в `template/card.html` (`.title`, `.location`, `.overlay`, `.brand`). Можно менять шрифт, размер текста, цвет/прозрачность затемнения без изменения скрипта.
+Card styles live in `template/card.html` and `template/card-impression.html` (`.title`, `.location`, `.overlay`, `.brand`). You can change font, text size, overlay color/opacity without touching the script.

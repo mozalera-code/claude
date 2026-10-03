@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Генерирует карточку 1080x1350 из фото + заголовка + места, рендеря HTML-шаблон в headless Chromium.
-// Варианты шаблона (--variant): classic (заголовок + место) | impression (заголовок-впечатление в виде цитаты + место)
-// Пример:
-//   node scripts/make_card.cjs --photo in.jpg --title "Закат на крыше" --location "Лиссабон, Португалия" --out out.png --brand "@mytravel"
-//   node scripts/make_card.cjs --variant impression --photo in.jpg --title "Будто попал в другую эпоху" --location "Лиссабон, Португалия" --out out.png
+// Renders a 1080x1350 card from a photo + headline + location via an HTML template in headless Chromium.
+// Template variants (--variant): classic (headline + location) | impression (headline as a quote + location)
+// Example:
+//   node scripts/make_card.cjs --photo in.jpg --title "Sunset on the Rooftop" --location "Lisbon, Portugal" --out out.png --brand "@mytravel"
+//   node scripts/make_card.cjs --variant impression --photo in.jpg --title "Like stepping into another era" --location "Lisbon, Portugal" --out out.png
 
 const { chromium } = require('playwright');
 const { readFileSync } = require('fs');
@@ -31,7 +31,7 @@ async function main() {
   const { photo, title, location, out, brand = '', variant = 'classic' } = args;
 
   if (!photo || !title || !location || !out) {
-    console.error('Нужны параметры: --photo <файл> --title "<текст>" --location "<текст>" --out <файл.png> [--brand "<текст>"] [--variant classic|impression]');
+    console.error('Required: --photo <file> --title "<text>" --location "<text>" --out <file.png> [--brand "<text>"] [--variant classic|impression]');
     process.exit(1);
   }
 
@@ -41,7 +41,7 @@ async function main() {
   };
   const templateFile = templateFiles[variant];
   if (!templateFile) {
-    console.error(`Неизвестный --variant "${variant}". Доступны: ${Object.keys(templateFiles).join(', ')}`);
+    console.error(`Unknown --variant "${variant}". Available: ${Object.keys(templateFiles).join(', ')}`);
     process.exit(1);
   }
 
@@ -69,7 +69,7 @@ async function main() {
   await page.screenshot({ path: resolve(out) });
   await browser.close();
 
-  console.log(`Готово: ${resolve(out)}`);
+  console.log(`Done: ${resolve(out)}`);
 }
 
 main().catch((err) => {
