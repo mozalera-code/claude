@@ -46,7 +46,20 @@ async function main() {
   }
 
   const templatePath = resolve(__dirname, '../template', templateFile);
-  const html = readFileSync(templatePath, 'utf-8');
+  let html = readFileSync(templatePath, 'utf-8');
+
+  const fontFiles = {
+    Fredoka: 'fredoka-700.ttf',
+    Caveat: 'caveat-700.ttf',
+  };
+  const fontFaces = Object.entries(fontFiles)
+    .map(([family, file]) => {
+      const fontPath = resolve(__dirname, '../template/fonts', file);
+      const fontBase64 = readFileSync(fontPath).toString('base64');
+      return `@font-face { font-family: '${family}'; src: url(data:font/ttf;base64,${fontBase64}) format('truetype'); font-weight: 700; font-display: block; }`;
+    })
+    .join('\n');
+  html = html.replace('/*FONT_FACES*/', fontFaces);
 
   const photoPath = resolve(photo);
   const photoBuffer = readFileSync(photoPath);
@@ -65,6 +78,7 @@ async function main() {
     document.getElementById('brand').textContent = brand;
   }, { photoDataUrl, title: escapeHtml(title), location: escapeHtml(location), brand: escapeHtml(brand) });
 
+  await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(100);
   await page.screenshot({ path: resolve(out) });
   await browser.close();
